@@ -212,6 +212,23 @@ class CrossDelayState:
         wetL[:k] += self.mix * self.rR[:k]
         wetR[:k] += self.mix * self.rL[:k]
         # Remainder of chunk: cross-feed inside the same chunk
+        if n > self.d:
+            wetL[self.d:] += self.mix * dryR[:-self.d]
+            wetR[self.d:] += self.mix * dryL[:-self.d]
+
+        # Update ring buffers with tail of current dry chunk
+        if n >= self.d:
+            self.rL[:] = dryL[-self.d:]
+            self.rR[:] = dryR[-self.d:]
+        else:
+            # shift existing ring left and append new samples
+            self.rL[:-n] = self.rL[n:]
+            self.rL[-n:] = dryL
+            self.rR[:-n] = self.rR[n:]
+            self.rR[-n:] = dryR
+
+        return wetL, wetR
+
 def program_to_inst(prog):
     """Return a compact instrument 'tag' based on GM program (0..127)."""
     p = int(prog)
