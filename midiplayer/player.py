@@ -57,20 +57,9 @@ class capture_stderr:
         self._tmp.seek(0)
         self.data = self._tmp.read().decode(errors="ignore")
         self._tmp.close()
+        return False
 
 # ------------------------------ DSP primitives --------------------------------
-        if n > self.d:
-            wetL[self.d:] += self.mix * dryR[:n - self.d]
-            wetR[self.d:] += self.mix * dryL[:n - self.d]
-
-        # Update rings with latest dry tail
-        if n >= self.d:
-            self.rL[:] = dryL[-self.d:]
-            self.rR[:] = dryR[-self.d:]
-        else:
-            self.rL = np.concatenate([self.rL[n:], dryL]) if self.d > 0 else None
-            self.rR = np.concatenate([self.rR[n:], dryR]) if self.d > 0 else None
-        return wetL, wetR
 
 def normalize(stereo, headroom_db=3.0):
     peak = float(np.max(np.abs(stereo)))
