@@ -29,3 +29,27 @@ pip install -r requirements.txt
 ```bash
 python synth_intro.py
 ```
+## MIDI Player
+
+This project also contains a 32‑voice MIDI softsynth. The code has been split into
+separate modules located in the `midiplayer` package:
+
+- `instruments.py` – basic DSP routines and instrument generators.
+- `player.py` – MIDI parsing, rendering, and playback logic.
+- `cli.py` – command line argument parsing.
+
+Use the `midi_player.py` script to render MIDI files or play a test tone. Running the
+script without any arguments shows the available options:
+
+```bash
+python midi_player.py
+```
+
+To render a MIDI file:
+
+```bash
+python midi_player.py --midi path/to/song.mid
+```
+
+The output lists available audio devices, plays the file through PyAudio and can also
+save the result as `midi_synth32.wav` when `--save` is provided.
